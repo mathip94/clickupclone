@@ -99,51 +99,6 @@ clickup-clone/
 └── public/                # Archivos estáticos
 ```
 
-## 📊 Funcionalidades Detalladas
-
-### ⏱️ Sistema de Cronómetros Avanzado
-- **Cronómetros individuales por tarea**: Cada tarea tiene su propio cronómetro independiente
-- **Persistencia en tiempo real**: Los cronómetros continúan funcionando entre recargas de página
-- **Prevención de múltiples timers**: Solo un cronómetro puede estar activo a la vez
-- **Descripciones de trabajo**: Capacidad de agregar descripciones mientras el cronómetro está corriendo
-- **Tiempo acumulado diario**: Visualización del tiempo total trabajado por tarea cada día
-- **Guardado automático**: Los registros se guardan automáticamente al detener el cronómetro
-
-### 📝 Sistema de Registros de Tiempo
-- **Modal de registros completo**: Visualización detallada de todos los registros de tiempo
-- **Información completa**: Duración, descripción, fechas de inicio/fin, usuario responsable
-- **Resumen estadístico**: Total de registros y tiempo acumulado por tarea
-- **Gestión de registros**: Capacidad de eliminar registros individuales
-- **Formato amigable**: Tiempos mostrados en formato horas/minutos/segundos
-
-### 💬 Sistema de Comentarios Independiente
-- **Comentarios separados**: Sistema completamente independiente del cronómetro
-- **Gestión completa**: Agregar, ver y eliminar comentarios
-- **Información contextual**: Autor, fecha y hora de cada comentario
-- **Permisos**: Solo el autor o administradores pueden eliminar comentarios
-- **Interfaz intuitiva**: Modal dedicado para la gestión de comentarios
-
-### ✏️ Edición Completa de Tareas
-- **Modal de edición avanzado**: Modifica todas las características de las tareas
-- **Campos editables**: Título, descripción, proyecto, asignación, prioridad, estado, fechas
-- **Validación robusta**: Validación de datos con esquemas Zod
-- **Eliminación de tareas**: Capacidad de eliminar tareas con confirmación
-- **Actualización en tiempo real**: Cambios reflejados inmediatamente en la interfaz
-
-### 🎯 Dashboard Mejorado
-- **Contadores dinámicos**: Estadísticas actualizadas automáticamente basadas en estados de tareas
-- **Tiempo en tiempo real**: Cálculo automático del tiempo total trabajado hoy
-- **Tarjetas de tareas**: Primeras 6 tareas con acceso completo a funcionalidades
-- **Progreso de proyectos**: Cálculo automático basado en tareas completadas
-- **Acciones rápidas**: Acceso directo a creación de tareas y proyectos
-
-### 📱 Interfaz de Usuario Avanzada
-- **Modo oscuro completo**: Soporte nativo para tema claro y oscuro
-- **Botones interactivos**: Contadores de comentarios y tiempo clickeables
-- **Estados visuales**: Indicadores de carga, éxito y error
-- **Responsive design**: Optimizado para desktop, tablet y móvil
-- **Feedback inmediato**: Actualizaciones de estado en tiempo real
-
 ## 🔧 APIs Implementadas
 
 ### Tareas
