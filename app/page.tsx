@@ -1,7 +1,36 @@
-import React from 'react'
+"use client"
+
+import React, { useEffect } from 'react'
 import Link from 'next/link'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 export default function HomePage() {
+  const { data: session, status } = useSession()
+  const router = useRouter()
+
+  useEffect(() => {
+    if (status === 'loading') return // Aún cargando
+    if (session) {
+      router.push('/dashboard')
+    }
+  }, [session, status, router])
+
+  if (status === 'loading') {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 flex items-center justify-center">
+        <div className="text-center text-white">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
+          <p className="mt-4">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (session) {
+    return null // Evita parpadeo mientras redirige
+  }
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700">
       <div className="container mx-auto px-4 py-16">

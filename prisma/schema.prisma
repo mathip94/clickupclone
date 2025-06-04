@@ -7,7 +7,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = "file:./dev.db"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -16,7 +16,7 @@ model User {
   name          String?
   password      String
   avatar        String?
-  role          Role      @default(MEMBER)
+  role          String    @default("MEMBER")
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
 
@@ -47,7 +47,7 @@ model Workspace {
 
 model WorkspaceMember {
   id          String        @id @default(cuid())
-  role        WorkspaceRole @default(MEMBER)
+  role        String        @default("MEMBER")
   joinedAt    DateTime      @default(now())
 
   // Foreign Keys
@@ -67,7 +67,7 @@ model Project {
   name        String
   description String?
   color       String        @default("#7B68EE")
-  status      ProjectStatus @default(ACTIVE)
+  status      String        @default("ACTIVE")
   startDate   DateTime?
   endDate     DateTime?
   createdAt   DateTime      @default(now())
@@ -87,9 +87,9 @@ model Task {
   id          String     @id @default(cuid())
   title       String
   description String?
-  status      TaskStatus @default(TODO)
-  priority    Priority   @default(MEDIUM)
-  points      Int?
+  status      String     @default("TODO")
+  priority    String     @default("MEDIUM")
+  startDate   DateTime?
   dueDate     DateTime?
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
@@ -172,37 +172,9 @@ model TaskTag {
   @@map("task_tags")
 }
 
-// Enums
-enum Role {
-  ADMIN
-  MEMBER
-}
-
-enum WorkspaceRole {
-  OWNER
-  ADMIN
-  MEMBER
-  GUEST
-}
-
-enum ProjectStatus {
-  ACTIVE
-  COMPLETED
-  ARCHIVED
-  ON_HOLD
-}
-
-enum TaskStatus {
-  TODO
-  IN_PROGRESS
-  IN_REVIEW
-  DONE
-  CANCELLED
-}
-
-enum Priority {
-  LOW
-  MEDIUM
-  HIGH
-  URGENT
-} 
+// Enum values as constants (for reference):
+// Role: "ADMIN", "MEMBER"
+// WorkspaceRole: "OWNER", "ADMIN", "MEMBER", "GUEST"  
+// ProjectStatus: "ACTIVE", "COMPLETED", "ARCHIVED", "ON_HOLD"
+// TaskStatus: "TODO", "IN_PROGRESS", "IN_REVIEW", "DONE", "CANCELLED"
+// Priority: "LOW", "MEDIUM", "HIGH", "URGENT" 

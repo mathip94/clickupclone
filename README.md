@@ -5,25 +5,26 @@ Una aplicación completa de gestión de proyectos inspirada en ClickUp, desarrol
 ## 🚀 Características Principales
 
 - **Gestión de Proyectos**: Organiza y administra proyectos con múltiples espacios de trabajo
-- **Gestión de Tareas**: Crea, asigna y da seguimiento a tareas con estados personalizables
-- **Seguimiento de Tiempo**: Registra el tiempo dedicado a cada tarea con cronómetro integrado
+- **Gestión de Tareas Completa**: Crea, edita, asigna y da seguimiento a tareas con estados personalizables
+- **Cronómetros Individuales**: Sistema avanzado de cronómetros por tarea con persistencia de datos
+- **Seguimiento de Tiempo Detallado**: Registra y visualiza el tiempo dedicado con reportes completos
+- **Sistema de Comentarios**: Comentarios separados e independientes del sistema de tiempo
 - **Colaboración en Equipo**: Asigna tareas a miembros del equipo y gestiona roles
 - **Dashboard Analítico**: Visualiza el progreso con gráficos y métricas en tiempo real
-- **Comentarios**: Sistema de comentarios contextuales en las tareas
-- **Etiquetas y Prioridades**: Organiza tareas con etiquetas y niveles de prioridad
-- **Notificaciones**: Sistema de notificaciones en tiempo real
+- **Edición Completa de Tareas**: Modifica todas las características de las tareas
+- **Modo Oscuro**: Interfaz adaptable con tema claro y oscuro
 - **Autenticación**: Sistema completo de autenticación con NextAuth
 
 ## 🛠️ Stack Tecnológico
 
 - **Frontend**: Next.js 14 (App Router), React 18, TypeScript
-- **Styling**: Tailwind CSS, Radix UI Components
+- **Styling**: Tailwind CSS con soporte para modo oscuro
 - **Backend**: Next.js API Routes, Prisma ORM
 - **Base de Datos**: SQLite (desarrollo), PostgreSQL (producción)
 - **Autenticación**: NextAuth.js
 - **Validación**: Zod
-- **Iconos**: Lucide React
-- **Gráficos**: Recharts
+- **Estado Local**: localStorage para persistencia de cronómetros
+- **Iconos**: SVG integrados y emojis
 
 ## 📦 Instalación
 
@@ -72,15 +73,24 @@ Una aplicación completa de gestión de proyectos inspirada en ClickUp, desarrol
 clickup-clone/
 ├── app/                    # Directorio de la aplicación (App Router)
 │   ├── auth/              # Páginas de autenticación
-│   ├── dashboard/         # Dashboard principal
-│   ├── projects/          # Gestión de proyectos
-│   ├── tasks/             # Gestión de tareas
+│   ├── dashboard/         # Dashboard principal y páginas de tareas
+│   │   └── tasks/         # Lista completa de tareas con filtros
 │   └── api/               # API Routes
+│       ├── tasks/         # CRUD de tareas y sub-recursos
+│       │   └── [id]/
+│       │       ├── comments/     # API de comentarios
+│       │       └── time-entries/ # API de registros de tiempo
+│       ├── comments/      # Gestión de comentarios
+│       ├── time-entries/  # Gestión de registros de tiempo
+│       └── ...
 ├── components/            # Componentes reutilizables
-│   ├── ui/                # Componentes de UI base
-│   ├── dashboard/         # Componentes del dashboard
-│   ├── projects/          # Componentes de proyectos
-│   └── tasks/             # Componentes de tareas
+│   ├── modals/            # Modales (CreateTask, EditTask, TimeEntries, Comments)
+│   ├── TaskCard.tsx       # Tarjeta de tarea con cronómetro integrado
+│   ├── TaskTimer.tsx      # Componente de cronómetro individual
+│   ├── TimeEntriesModal.tsx # Modal para ver registros de tiempo
+│   ├── CommentsModal.tsx  # Modal para gestionar comentarios
+│   ├── ThemeToggle.tsx    # Toggle para modo oscuro
+│   └── providers/         # Proveedores de contexto
 ├── lib/                   # Utilidades y configuraciones
 │   ├── auth.ts            # Configuración de NextAuth
 │   ├── db.ts              # Cliente de Prisma
@@ -91,63 +101,113 @@ clickup-clone/
 
 ## 📊 Funcionalidades Detalladas
 
-### Gestión de Espacios de Trabajo
-- Crear y administrar múltiples espacios de trabajo
-- Invitar miembros con diferentes roles (Owner, Admin, Member, Guest)
-- Configurar permisos por espacio de trabajo
+### ⏱️ Sistema de Cronómetros Avanzado
+- **Cronómetros individuales por tarea**: Cada tarea tiene su propio cronómetro independiente
+- **Persistencia en tiempo real**: Los cronómetros continúan funcionando entre recargas de página
+- **Prevención de múltiples timers**: Solo un cronómetro puede estar activo a la vez
+- **Descripciones de trabajo**: Capacidad de agregar descripciones mientras el cronómetro está corriendo
+- **Tiempo acumulado diario**: Visualización del tiempo total trabajado por tarea cada día
+- **Guardado automático**: Los registros se guardan automáticamente al detener el cronómetro
 
-### Gestión de Proyectos
-- Crear proyectos dentro de espacios de trabajo
-- Estados de proyecto: Activo, Completado, Archivado, En Pausa
-- Fechas de inicio y fin de proyecto
-- Colores personalizables para proyectos
+### 📝 Sistema de Registros de Tiempo
+- **Modal de registros completo**: Visualización detallada de todos los registros de tiempo
+- **Información completa**: Duración, descripción, fechas de inicio/fin, usuario responsable
+- **Resumen estadístico**: Total de registros y tiempo acumulado por tarea
+- **Gestión de registros**: Capacidad de eliminar registros individuales
+- **Formato amigable**: Tiempos mostrados en formato horas/minutos/segundos
 
-### Gestión de Tareas
-- Estados de tarea: Por Hacer, En Progreso, En Revisión, Completado, Cancelado
-- Niveles de prioridad: Baja, Media, Alta, Urgente
-- Asignación a miembros del equipo
-- Fechas de vencimiento
-- Puntos de estimación
-- Sistema de etiquetas
+### 💬 Sistema de Comentarios Independiente
+- **Comentarios separados**: Sistema completamente independiente del cronómetro
+- **Gestión completa**: Agregar, ver y eliminar comentarios
+- **Información contextual**: Autor, fecha y hora de cada comentario
+- **Permisos**: Solo el autor o administradores pueden eliminar comentarios
+- **Interfaz intuitiva**: Modal dedicado para la gestión de comentarios
 
-### Seguimiento de Tiempo
-- Cronómetro integrado para tareas
-- Registro manual de tiempo
-- Reportes de tiempo por usuario y proyecto
-- Exportación de reportes
+### ✏️ Edición Completa de Tareas
+- **Modal de edición avanzado**: Modifica todas las características de las tareas
+- **Campos editables**: Título, descripción, proyecto, asignación, prioridad, estado, fechas
+- **Validación robusta**: Validación de datos con esquemas Zod
+- **Eliminación de tareas**: Capacidad de eliminar tareas con confirmación
+- **Actualización en tiempo real**: Cambios reflejados inmediatamente en la interfaz
 
-### Sistema de Comentarios
-- Comentarios contextuales en tareas
-- Notificaciones de nuevos comentarios
-- Historial completo de actividad
+### 🎯 Dashboard Mejorado
+- **Contadores dinámicos**: Estadísticas actualizadas automáticamente basadas en estados de tareas
+- **Tiempo en tiempo real**: Cálculo automático del tiempo total trabajado hoy
+- **Tarjetas de tareas**: Primeras 6 tareas con acceso completo a funcionalidades
+- **Progreso de proyectos**: Cálculo automático basado en tareas completadas
+- **Acciones rápidas**: Acceso directo a creación de tareas y proyectos
+
+### 📱 Interfaz de Usuario Avanzada
+- **Modo oscuro completo**: Soporte nativo para tema claro y oscuro
+- **Botones interactivos**: Contadores de comentarios y tiempo clickeables
+- **Estados visuales**: Indicadores de carga, éxito y error
+- **Responsive design**: Optimizado para desktop, tablet y móvil
+- **Feedback inmediato**: Actualizaciones de estado en tiempo real
+
+## 🔧 APIs Implementadas
+
+### Tareas
+- `GET /api/tasks` - Obtener todas las tareas
+- `POST /api/tasks` - Crear nueva tarea
+- `GET /api/tasks/[id]` - Obtener tarea específica
+- `PATCH /api/tasks/[id]` - Actualizar tarea
+- `DELETE /api/tasks/[id]` - Eliminar tarea
+
+### Registros de Tiempo
+- `GET /api/tasks/[id]/time-entries` - Obtener registros de tiempo de una tarea
+- `POST /api/tasks/[id]/time-entries` - Crear nuevo registro de tiempo
+- `DELETE /api/time-entries/[id]` - Eliminar registro de tiempo específico
+
+### Comentarios
+- `GET /api/tasks/[id]/comments` - Obtener comentarios de una tarea
+- `POST /api/tasks/[id]/comments` - Crear nuevo comentario
+- `DELETE /api/comments/[id]` - Eliminar comentario específico
+
+### Dashboard
+- `GET /api/dashboard/stats` - Obtener estadísticas del dashboard
 
 ## 🎨 Componentes UI
 
-La aplicación utiliza un sistema de componentes basado en Radix UI:
+La aplicación utiliza componentes personalizados optimizados:
 
-- **Button**: Botones con múltiples variantes
-- **Input**: Campos de entrada con validación
-- **Dialog**: Modales y diálogos
-- **Dropdown**: Menús desplegables
-- **Toast**: Notificaciones tipo toast
-- **Tabs**: Navegación por pestañas
-- **Avatar**: Avatares de usuario
-- **Badge**: Etiquetas y badges
+- **TaskCard**: Tarjeta de tarea con cronómetro integrado y acciones
+- **TaskTimer**: Cronómetro individual con persistencia
+- **TimeEntriesModal**: Modal para visualizar registros de tiempo
+- **CommentsModal**: Modal para gestionar comentarios
+- **EditTaskModal**: Modal para edición completa de tareas
+- **ThemeToggle**: Alternador de tema claro/oscuro
 
 ## 🔐 Autenticación y Autorización
 
-- Registro e inicio de sesión con email/contraseña
-- Autenticación OAuth (Google)
-- Roles de usuario a nivel de aplicación y espacio de trabajo
-- Protección de rutas basada en roles
-- Sesiones seguras con NextAuth
+- **NextAuth.js**: Sistema de autenticación robusto
+- **Roles y permisos**: Control de acceso basado en roles de workspace
+- **Protección de APIs**: Todas las rutas protegidas con verificación de sesión
+- **Autorización granular**: Permisos específicos para eliminar comentarios y registros
+
+## 🚀 Características Técnicas
+
+### Persistencia de Datos
+- **localStorage**: Para cronómetros activos y tiempo acumulado diario
+- **Base de datos**: Para registros permanentes de tiempo y comentarios
+- **Sincronización**: Coordinación entre localStorage y base de datos
+
+### Manejo de Errores
+- **Try-catch robusto**: Manejo de errores en todas las operaciones críticas
+- **Logs detallados**: Sistema de logging para debugging
+- **Feedback visual**: Mensajes de error y éxito para el usuario
+- **Validación de datos**: Esquemas Zod para validación server-side
+
+### Performance
+- **Carga condicional**: Componentes cargados solo cuando son necesarios
+- **Actualizaciones optimizadas**: Re-renders mínimos con estado local optimizado
+- **Llamadas API eficientes**: Reducción de llamadas innecesarias a la API
 
 ## 📱 Responsive Design
 
 La aplicación está completamente optimizada para:
-- Desktop (1024px+)
-- Tablet (768px - 1023px)
-- Mobile (320px - 767px)
+- **Desktop** (1024px+): Interfaz completa con todas las funcionalidades
+- **Tablet** (768px - 1023px): Diseño adaptado con navegación optimizada
+- **Mobile** (320px - 767px): Interfaz móvil con componentes redimensionados
 
 ## 🚀 Despliegue
 
@@ -175,9 +235,25 @@ La aplicación está completamente optimizada para:
 - `npm run build` - Crea el build de producción
 - `npm run start` - Inicia el servidor de producción
 - `npm run lint` - Ejecuta el linter
-- `npm run db:push` - Sincroniza el schema con la base de datos
-- `npm run db:studio` - Abre Prisma Studio
-- `npm run db:generate` - Genera el cliente de Prisma
+- `npx prisma db push` - Sincroniza el schema con la base de datos
+- `npx prisma studio` - Abre Prisma Studio
+- `npx prisma generate` - Genera el cliente de Prisma
+
+## 🎯 Casos de Uso Principales
+
+1. **Gestión de Proyectos Empresariales**: Equipos que necesitan seguimiento detallado de tiempo y tareas
+2. **Freelancers**: Profesionales independientes que requieren facturación basada en tiempo
+3. **Equipos de Desarrollo**: Seguimiento de sprints y estimaciones de tiempo
+4. **Agencias Creativas**: Gestión de proyectos cliente con múltiples colaboradores
+
+## 🔄 Flujo de Trabajo Típico
+
+1. **Crear Proyecto**: Configura un nuevo proyecto con color y detalles
+2. **Agregar Tareas**: Crea tareas con descripciones, fechas y asignaciones
+3. **Trabajar con Cronómetro**: Inicia el cronómetro al comenzar a trabajar
+4. **Agregar Comentarios**: Documenta progreso y comunicaciones
+5. **Revisar Registros**: Analiza tiempo invertido y productividad
+6. **Completar Tareas**: Actualiza estados y revisa métricas del proyecto
 
 ## 🤝 Contribuir
 
@@ -198,13 +274,15 @@ Si encuentras algún bug, por favor crea un issue en GitHub con:
 - Pasos para reproducir el bug
 - Capturas de pantalla (si aplica)
 - Información del sistema
+- Logs de consola (si aplica)
 
 ## 📞 Soporte
 
 Para soporte y preguntas:
 - Crea un issue en GitHub
 - Contacta al equipo de desarrollo
+- Revisa la documentación en INSTRUCCIONES.md
 
 ---
 
-Desarrollado con ❤️ usando Next.js y TypeScript 
+Desarrollado con ❤️ usando Next.js, TypeScript y Prisma 
