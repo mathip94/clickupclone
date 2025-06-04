@@ -157,7 +157,7 @@ export default function CommentsModal({ isOpen, onClose, taskId, taskTitle }: Co
                 onChange={(e) => setNewComment(e.target.value)}
                 placeholder="Escribe un comentario..."
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white resize-none"
                 disabled={isSubmitting}
               />
             </div>
@@ -166,7 +166,7 @@ export default function CommentsModal({ isOpen, onClose, taskId, taskTitle }: Co
             <button
               type="submit"
               disabled={isSubmitting || !newComment.trim()}
-              className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="px-4 py-2 bg-gray-900 text-white rounded-lg hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed transition-colors dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
             >
               {isSubmitting ? 'Enviando...' : 'Comentar'}
             </button>
@@ -176,7 +176,7 @@ export default function CommentsModal({ isOpen, onClose, taskId, taskTitle }: Co
         {/* Comments List */}
         {isLoading ? (
           <div className="text-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 dark:border-emerald-400 mx-auto"></div>
             <p className="mt-2 text-gray-600 dark:text-gray-400">Cargando comentarios...</p>
           </div>
         ) : comments.length === 0 ? (
@@ -193,7 +193,7 @@ export default function CommentsModal({ isOpen, onClose, taskId, taskTitle }: Co
               <div key={comment.id} className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex items-center space-x-3">
-                    <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
+                    <div className="w-8 h-8 bg-gray-600 rounded-full flex items-center justify-center text-white text-sm font-medium">
                       {comment.author.name ? comment.author.name.charAt(0).toUpperCase() : 'U'}
                     </div>
                     <div>

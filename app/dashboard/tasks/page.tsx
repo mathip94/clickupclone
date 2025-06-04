@@ -174,7 +174,7 @@ export default function TasksPage() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-600 dark:border-emerald-400"></div>
           <p className="mt-4 text-gray-600 dark:text-gray-400">Cargando tareas...</p>
         </div>
       </div>
@@ -191,7 +191,7 @@ export default function TasksPage() {
       <header className="bg-white dark:bg-gray-800 shadow-sm border-b dark:border-gray-700">
         <div className="flex items-center justify-between px-6 py-4">
           <div className="flex items-center space-x-4">
-            <Link href="/dashboard" className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300">
+            <Link href="/dashboard" className="text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300">
               ← Dashboard
             </Link>
             <h1 className="text-2xl font-bold text-gray-900 dark:text-white">Todas las Tareas</h1>
@@ -202,7 +202,7 @@ export default function TasksPage() {
           <div className="flex items-center space-x-4">
             <button 
               onClick={() => setShowCreateTask(true)}
-              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+              className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
             >
               + Nueva Tarea
             </button>
@@ -297,7 +297,7 @@ export default function TasksPage() {
             </p>
             <button 
               onClick={() => setShowCreateTask(true)}
-              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+              className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition-colors dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
             >
               Crear Nueva Tarea
             </button>

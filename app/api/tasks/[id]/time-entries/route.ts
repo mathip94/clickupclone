@@ -7,8 +7,9 @@ import { z } from "zod"
 const createTimeEntrySchema = z.object({
   description: z.string().optional(),
   duration: z.number().min(0, "La duración debe ser positiva"),
-  startTime: z.string().datetime(),
-  endTime: z.string().datetime().optional()
+  startTime: z.string().datetime().optional(),
+  endTime: z.string().datetime().optional(),
+  isManual: z.boolean().optional().default(false)
 })
 
 const startTimerSchema = z.object({
@@ -56,15 +57,35 @@ export async function POST(
       )
     }
 
+    // Para entradas manuales, startTime y endTime son opcionales
+    // Para entradas automáticas (cronómetro), startTime es requerido
+    if (!data.isManual && !data.startTime) {
+      return NextResponse.json(
+        { error: "startTime es requerido para entradas automáticas" },
+        { status: 400 }
+      )
+    }
+
+    const timeEntryData: any = {
+      description: data.description,
+      duration: data.duration,
+      isManual: data.isManual,
+      taskId: params.id,
+      userId: session.user.id
+    }
+
+    if (data.startTime) {
+      timeEntryData.startTime = new Date(data.startTime)
+    }
+
+    if (data.endTime) {
+      timeEntryData.endTime = new Date(data.endTime)
+    } else if (data.startTime) {
+      timeEntryData.endTime = new Date()
+    }
+
     const timeEntry = await prisma.timeEntry.create({
-      data: {
-        description: data.description,
-        duration: data.duration,
-        startTime: new Date(data.startTime),
-        endTime: data.endTime ? new Date(data.endTime) : new Date(),
-        taskId: params.id,
-        userId: session.user.id
-      },
+      data: timeEntryData,
       include: {
         user: {
           select: {

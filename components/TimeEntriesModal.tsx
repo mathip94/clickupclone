@@ -134,7 +134,7 @@ export default function TimeEntriesModal({ isOpen, onClose, taskId, taskTitle }:
             </div>
             <div>
               <p className="text-sm text-gray-600 dark:text-gray-400">Tiempo total registrado</p>
-              <p className="text-2xl font-bold text-purple-600 dark:text-purple-400">
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 {formatDuration(getTotalTime())}
               </p>
             </div>
@@ -143,7 +143,7 @@ export default function TimeEntriesModal({ isOpen, onClose, taskId, taskTitle }:
 
         {isLoading ? (
           <div className="text-center py-8">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto"></div>
+            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-emerald-600 dark:border-emerald-400 mx-auto"></div>
             <p className="mt-2 text-gray-600 dark:text-gray-400">Cargando registros...</p>
           </div>
         ) : timeEntries.length === 0 ? (
@@ -161,7 +161,7 @@ export default function TimeEntriesModal({ isOpen, onClose, taskId, taskTitle }:
                 <div className="flex justify-between items-start mb-2">
                   <div className="flex-1">
                     <div className="flex items-center space-x-4 mb-2">
-                      <span className="text-lg font-mono font-bold text-purple-600 dark:text-purple-400">
+                      <span className="text-lg font-mono font-bold text-gray-900 dark:text-white">
                         {formatDuration(entry.duration)}
                       </span>
                       <span className="text-sm text-gray-500 dark:text-gray-400">

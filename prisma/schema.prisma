@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,103 +8,137 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
-  email         String    @unique
-  name          String?
-  password      String
-  avatar        String?
-  role          String    @default("MEMBER")
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  id               String            @id @default(cuid())
+  email            String            @unique
+  name             String?
+  password         String
+  avatar           String?
+  role             String            @default("MEMBER")
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  comments         Comment[]
+  meetingAttendees MeetingAttendee[]
+  createdMeetings  Meeting[]         @relation("MeetingCreator")
+  projectMembers   ProjectMember[]
+  assignedTasks    Task[]            @relation("TaskAssignee")
+  createdTasks     Task[]            @relation("TaskCreator")
+  timeEntries      TimeEntry[]
+  workspaces       WorkspaceMember[]
 
-  // Relationships
-  workspaces    WorkspaceMember[]
-  createdTasks  Task[]            @relation("TaskCreator")
-  assignedTasks Task[]            @relation("TaskAssignee")
-  comments      Comment[]
-  timeEntries   TimeEntry[]
-  
   @@map("users")
 }
 
 model Workspace {
-  id          String   @id @default(cuid())
+  id          String            @id @default(cuid())
   name        String
   description String?
-  color       String   @default("#7B68EE")
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  color       String            @default("#7B68EE")
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  projects    Project[]
+  members     WorkspaceMember[]
 
-  // Relationships
-  members  WorkspaceMember[]
-  projects Project[]
-  
   @@map("workspaces")
 }
 
 model WorkspaceMember {
-  id          String        @id @default(cuid())
-  role        String        @default("MEMBER")
-  joinedAt    DateTime      @default(now())
-
-  // Foreign Keys
+  id          String    @id @default(cuid())
+  role        String    @default("MEMBER")
+  joinedAt    DateTime  @default(now())
   userId      String
   workspaceId String
-
-  // Relationships
-  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  workspace   Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, workspaceId])
   @@map("workspace_members")
 }
 
 model Project {
-  id          String        @id @default(cuid())
+  id          String          @id @default(cuid())
   name        String
   description String?
-  color       String        @default("#7B68EE")
-  status      String        @default("ACTIVE")
+  color       String          @default("#7B68EE")
+  status      String          @default("ACTIVE")
   startDate   DateTime?
   endDate     DateTime?
-  createdAt   DateTime      @default(now())
-  updatedAt   DateTime      @updatedAt
-
-  // Foreign Keys
+  createdAt   DateTime        @default(now())
+  updatedAt   DateTime        @updatedAt
   workspaceId String
+  meetings    Meeting[]
+  members     ProjectMember[]
+  workspace   Workspace       @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  tasks       Task[]
 
-  // Relationships
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  tasks     Task[]
-  
   @@map("projects")
 }
 
+model ProjectMember {
+  id        String   @id @default(cuid())
+  role      String   @default("MEMBER")
+  joinedAt  DateTime @default(now())
+  invitedBy String?
+  userId    String
+  projectId String
+  project   Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, projectId])
+  @@map("project_members")
+}
+
 model Task {
-  id          String     @id @default(cuid())
+  id          String      @id @default(cuid())
   title       String
   description String?
-  status      String     @default("TODO")
-  priority    String     @default("MEDIUM")
+  status      String      @default("TODO")
+  priority    String      @default("MEDIUM")
   startDate   DateTime?
   dueDate     DateTime?
-  createdAt   DateTime   @default(now())
-  updatedAt   DateTime   @updatedAt
-
-  // Foreign Keys
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
   projectId   String
   createdById String
   assigneeId  String?
-
-  // Relationships
-  project     Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
-  createdBy   User        @relation("TaskCreator", fields: [createdById], references: [id])
-  assignee    User?       @relation("TaskAssignee", fields: [assigneeId], references: [id])
   comments    Comment[]
-  timeEntries TimeEntry[]
   tags        TaskTag[]
-  
+  assignee    User?       @relation("TaskAssignee", fields: [assigneeId], references: [id])
+  createdBy   User        @relation("TaskCreator", fields: [createdById], references: [id])
+  project     Project     @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  timeEntries TimeEntry[]
+
   @@map("tasks")
+}
+
+model Meeting {
+  id          String            @id @default(cuid())
+  name        String
+  description String?
+  date        DateTime
+  duration    Int
+  type        String            @default("TEAM")
+  location    String            @default("REMOTE")
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+  projectId   String
+  createdById String
+  attendees   MeetingAttendee[]
+  createdBy   User              @relation("MeetingCreator", fields: [createdById], references: [id])
+  project     Project           @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("meetings")
+}
+
+model MeetingAttendee {
+  id        String   @id @default(cuid())
+  joinedAt  DateTime @default(now())
+  meetingId String
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meeting   Meeting  @relation(fields: [meetingId], references: [id], onDelete: Cascade)
+
+  @@unique([meetingId, userId])
+  @@map("meeting_attendees")
 }
 
 model Comment {
@@ -115,66 +146,46 @@ model Comment {
   content   String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  taskId    String
+  authorId  String
+  author    User     @relation(fields: [authorId], references: [id])
+  task      Task     @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
-  // Foreign Keys
-  taskId   String
-  authorId String
-
-  // Relationships
-  task   Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  author User @relation(fields: [authorId], references: [id])
-  
   @@map("comments")
 }
 
 model TimeEntry {
   id          String    @id @default(cuid())
   description String?
-  duration    Int       // in minutes
-  startTime   DateTime
+  duration    Int
+  startTime   DateTime?
   endTime     DateTime?
+  isManual    Boolean   @default(false)
   createdAt   DateTime  @default(now())
+  taskId      String
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  task        Task      @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
-  // Foreign Keys
-  taskId String
-  userId String
-
-  // Relationships
-  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  user User @relation(fields: [userId], references: [id])
-  
   @@map("time_entries")
 }
 
 model Tag {
-  id    String @id @default(cuid())
-  name  String @unique
-  color String @default("#7B68EE")
-
-  // Relationships
+  id    String    @id @default(cuid())
+  name  String    @unique
+  color String    @default("#7B68EE")
   tasks TaskTag[]
-  
+
   @@map("tags")
 }
 
 model TaskTag {
-  id String @id @default(cuid())
-
-  // Foreign Keys
+  id     String @id @default(cuid())
   taskId String
   tagId  String
-
-  // Relationships
-  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  tag  Tag  @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tag    Tag    @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  task   Task   @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@unique([taskId, tagId])
   @@map("task_tags")
 }
-
-// Enum values as constants (for reference):
-// Role: "ADMIN", "MEMBER"
-// WorkspaceRole: "OWNER", "ADMIN", "MEMBER", "GUEST"  
-// ProjectStatus: "ACTIVE", "COMPLETED", "ARCHIVED", "ON_HOLD"
-// TaskStatus: "TODO", "IN_PROGRESS", "IN_REVIEW", "DONE", "CANCELLED"
-// Priority: "LOW", "MEDIUM", "HIGH", "URGENT" 

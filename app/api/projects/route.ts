@@ -43,6 +43,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
+    // Crear proyecto y añadir al creador como owner
     const project = await prisma.project.create({
       data: {
         name: data.name,
@@ -51,13 +52,30 @@ export async function POST(request: NextRequest) {
         workspaceId: data.workspaceId,
         startDate: data.startDate ? new Date(data.startDate) : null,
         endDate: data.endDate ? new Date(data.endDate) : null,
-        status: "ACTIVE"
+        status: "ACTIVE",
+        members: {
+          create: {
+            userId: session.user.id,
+            role: "OWNER"
+          }
+        }
       },
       include: {
         workspace: {
           select: {
             id: true,
             name: true
+          }
+        },
+        members: {
+          include: {
+            user: {
+              select: {
+                id: true,
+                name: true,
+                email: true
+              }
+            }
           }
         },
         _count: {
@@ -98,14 +116,12 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url)
     const workspaceId = searchParams.get('workspaceId')
 
-    // Obtener proyectos donde el usuario es miembro del workspace
+    // Obtener proyectos donde el usuario es miembro directo del proyecto
     const projects = await prisma.project.findMany({
       where: {
-        workspace: {
-          members: {
-            some: {
-              userId: session.user.id
-            }
+        members: {
+          some: {
+            userId: session.user.id
           }
         },
         ...(workspaceId && { workspaceId })
@@ -122,6 +138,14 @@ export async function GET(request: NextRequest) {
             id: true,
             status: true
           }
+        },
+        members: {
+          where: {
+            userId: session.user.id
+          },
+          select: {
+            role: true
+          }
         }
       },
       orderBy: {
@@ -129,15 +153,17 @@ export async function GET(request: NextRequest) {
       }
     })
 
-    // Calcular estadísticas manualmente y añadir workspaceId
+    // Calcular estadísticas manualmente y añadir información del usuario
     const projectsWithStats = projects.map(project => ({
       ...project,
       workspaceId: project.workspace.id,
+      userRole: project.members[0]?.role || "MEMBER",
       _count: {
         tasks: project.tasks.length,
         completedTasks: project.tasks.filter(task => task.status === "DONE").length
       },
-      tasks: undefined // Remover las tareas del resultado
+      tasks: undefined, // Remover las tareas del resultado
+      members: undefined // Remover los miembros del resultado (ya tenemos userRole)
     }))
 
     return NextResponse.json(projectsWithStats)

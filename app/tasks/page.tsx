@@ -2,14 +2,14 @@ import React from 'react'
 
 export default function TasksPage() {
   const columns = [
-    { id: 'todo', title: 'Por Hacer', color: 'bg-gray-100' },
-    { id: 'in-progress', title: 'En Progreso', color: 'bg-blue-100' },
-    { id: 'in-review', title: 'En Revisión', color: 'bg-purple-100' },
-    { id: 'done', title: 'Completadas', color: 'bg-green-100' },
+    { id: 'pending', title: 'Pendientes', color: 'bg-amber-100' },
+    { id: 'in-progress', title: 'En Progreso', color: 'bg-sky-100' },
+    { id: 'in-review', title: 'En Revisión', color: 'bg-violet-100' },
+    { id: 'completed', title: 'Completadas', color: 'bg-green-100' },
   ]
 
   const tasks = {
-    'todo': [
+    'pending': [
       { id: 1, title: 'Diseñar página de inicio', priority: 'Alta', assignee: 'Juan Pérez', time: '0h' },
       { id: 2, title: 'Configurar servidor', priority: 'Media', assignee: 'María García', time: '0h' },
       { id: 3, title: 'Escribir tests unitarios', priority: 'Baja', assignee: 'Carlos López', time: '0h' },
@@ -21,7 +21,7 @@ export default function TasksPage() {
     'in-review': [
       { id: 6, title: 'API de usuarios', priority: 'Alta', assignee: 'Laura Sánchez', time: '4h' },
     ],
-    'done': [
+    'completed': [
       { id: 7, title: 'Setup inicial del proyecto', priority: 'Alta', assignee: 'Juan Pérez', time: '1h' },
       { id: 8, title: 'Configurar base de datos', priority: 'Media', assignee: 'María García', time: '2.5h' },
       { id: 9, title: 'Documentación básica', priority: 'Baja', assignee: 'Carlos López', time: '1.5h' },
@@ -45,7 +45,7 @@ export default function TasksPage() {
             </div>
           </div>
           <div className="flex items-center space-x-4">
-            <button className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+            <button className="bg-gray-900 text-white px-4 py-2 rounded-lg hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200">
               + Nueva Tarea
             </button>
             <button className="bg-white border border-gray-300 px-4 py-2 rounded-lg hover:bg-gray-50">
@@ -92,7 +92,7 @@ export default function TasksPage() {
 
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-2">
-                        <div className="w-6 h-6 bg-purple-600 rounded-full flex items-center justify-center text-white text-xs font-semibold">
+                        <div className="w-6 h-6 bg-gray-600 rounded-full flex items-center justify-center text-white text-xs font-semibold">
                           {task.assignee.split(' ').map(n => n[0]).join('')}
                         </div>
                         <span className="text-xs text-gray-600">{task.assignee}</span>
@@ -110,7 +110,7 @@ export default function TasksPage() {
                 ))}
 
                 {/* Add Task Button */}
-                <button className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 hover:border-purple-300 hover:text-purple-600 transition-colors">
+                <button className="w-full border-2 border-dashed border-gray-300 rounded-lg p-4 text-gray-500 hover:border-gray-600 hover:text-gray-700 transition-colors dark:border-gray-600 dark:hover:border-gray-500 dark:hover:text-gray-400">
                   + Agregar tarea
                 </button>
               </div>
@@ -130,7 +130,7 @@ export default function TasksPage() {
               </label>
               <input
                 type="text"
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 placeholder="Escribe el título..."
               />
             </div>
@@ -140,7 +140,7 @@ export default function TasksPage() {
               </label>
               <textarea
                 rows={3}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500"
                 placeholder="Describe la tarea..."
               />
             </div>
@@ -149,7 +149,7 @@ export default function TasksPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Prioridad
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500">
                   <option>Baja</option>
                   <option>Media</option>
                   <option>Alta</option>
@@ -160,7 +160,7 @@ export default function TasksPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Asignar a
                 </label>
-                <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500">
+                <select className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500">
                   <option>Juan Pérez</option>
                   <option>María García</option>
                   <option>Carlos López</option>
@@ -177,7 +177,7 @@ export default function TasksPage() {
               </button>
               <button
                 type="submit"
-                className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700"
+                className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
               >
                 Crear Tarea
               </button>

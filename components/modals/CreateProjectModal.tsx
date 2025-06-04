@@ -18,10 +18,11 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
   const [formData, setFormData] = useState({
     name: '',
     description: '',
-    color: '#7B68EE',
+    color: '#6a6a6a',
     workspaceId: '',
     startDate: '',
-    endDate: ''
+    endDate: '',
+    isPublic: true
   })
   const [workspaces, setWorkspaces] = useState<Workspace[]>([])
   const [isLoading, setIsLoading] = useState(false)
@@ -114,10 +115,11 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
         setFormData({
           name: '',
           description: '',
-          color: '#7B68EE',
+          color: '#6a6a6a',
           workspaceId: '',
           startDate: '',
-          endDate: ''
+          endDate: '',
+          isPublic: true
         })
       } else {
         setError(data.error || 'Error al crear el proyecto')
@@ -166,7 +168,7 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
                 id="workspaceName"
                 value={newWorkspaceName}
                 onChange={(e) => setNewWorkspaceName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="Ej: Mi Empresa"
                 disabled={isLoading}
               />
@@ -182,7 +184,7 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
               <button
                 onClick={createWorkspace}
                 disabled={!newWorkspaceName.trim() || isLoading}
-                className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
               >
                 Crear Workspace
               </button>
@@ -201,7 +203,7 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
                 required
                 value={formData.name}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="Ej: Aplicación Web"
                 disabled={isLoading}
               />
@@ -217,7 +219,7 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
                 rows={3}
                 value={formData.description}
                 onChange={handleChange}
-                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                 placeholder="Descripción del proyecto..."
                 disabled={isLoading}
               />
@@ -234,7 +236,7 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
                   required
                   value={formData.workspaceId}
                   onChange={handleChange}
-                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   disabled={isLoading}
                 >
                   <option value="">Seleccionar workspace...</option>
@@ -247,7 +249,7 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
                 <button
                   type="button"
                   onClick={() => setShowCreateWorkspace(true)}
-                  className="px-3 py-2 text-purple-600 dark:text-purple-400 border border-purple-600 dark:border-purple-400 rounded-md hover:bg-purple-50 dark:hover:bg-purple-900 text-sm"
+                  className="px-3 py-2 text-gray-600 dark:text-gray-400 border border-gray-600 dark:border-gray-400 rounded-md hover:bg-gray-50 dark:hover:bg-gray-700 text-sm"
                   disabled={isLoading}
                 >
                   + Nuevo
@@ -260,7 +262,7 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
                 Color del Proyecto
               </label>
               <div className="flex space-x-2">
-                {['#7B68EE', '#FF6B6B', '#4ECDC4', '#45B7D1', '#96CEB4', '#FFEAA7', '#DDA0DD', '#98D8C8'].map((color) => (
+                {['#6a6a6a', '#FF6B6B', '#4ECDC4', '#2d2d2d', '#96CEB4', '#FFEAA7', '#8a8a8a', '#98D8C8'].map((color) => (
                   <button
                     key={color}
                     type="button"
@@ -284,7 +286,7 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
                   name="startDate"
                   value={formData.startDate}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   disabled={isLoading}
                 />
               </div>
@@ -298,7 +300,7 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
                   name="endDate"
                   value={formData.endDate}
                   onChange={handleChange}
-                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-gray-500 bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
                   disabled={isLoading}
                 />
               </div>
@@ -315,8 +317,8 @@ export default function CreateProjectModal({ isOpen, onClose, onProjectCreated }
               </button>
               <button
                 type="submit"
-                disabled={isLoading || !formData.name || !formData.workspaceId}
-                className="px-4 py-2 bg-purple-600 text-white rounded-md hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                disabled={isLoading || !formData.name}
+                className="px-4 py-2 bg-gray-900 text-white rounded-md hover:bg-gray-800 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200"
               >
                 {isLoading ? 'Creando...' : 'Crear Proyecto'}
               </button>

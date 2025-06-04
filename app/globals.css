@@ -4,48 +4,48 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 263 85% 68%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96%;
-    --secondary-foreground: 222.2 84% 4.9%;
-    --muted: 210 40% 96%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96%;
-    --accent-foreground: 222.2 84% 4.9%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 263 85% 68%;
+    --background: 0 0% 100% !important;
+    --foreground: 0 0% 3% !important;
+    --card: 0 0% 100% !important;
+    --card-foreground: 0 0% 3% !important;
+    --popover: 0 0% 100% !important;
+    --popover-foreground: 0 0% 3% !important;
+    --primary: 0 0% 20% !important;
+    --primary-foreground: 0 0% 98% !important;
+    --secondary: 0 0% 96% !important;
+    --secondary-foreground: 0 0% 3% !important;
+    --muted: 0 0% 96% !important;
+    --muted-foreground: 0 0% 45% !important;
+    --accent: 0 0% 96% !important;
+    --accent-foreground: 0 0% 3% !important;
+    --destructive: 0 84.2% 60.2% !important;
+    --destructive-foreground: 0 0% 98% !important;
+    --border: 0 0% 91% !important;
+    --input: 0 0% 91% !important;
+    --ring: 0 0% 20% !important;
     --radius: 0.5rem;
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 263 85% 68%;
-    --primary-foreground: 222.2 84% 4.9%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 263 85% 68%;
+    --background: 0 0% 3% !important;
+    --foreground: 0 0% 98% !important;
+    --card: 0 0% 4% !important;
+    --card-foreground: 0 0% 98% !important;
+    --popover: 0 0% 4% !important;
+    --popover-foreground: 0 0% 98% !important;
+    --primary: 0 0% 98% !important;
+    --primary-foreground: 0 0% 3% !important;
+    --secondary: 0 0% 6% !important;
+    --secondary-foreground: 0 0% 98% !important;
+    --muted: 0 0% 6% !important;
+    --muted-foreground: 0 0% 55% !important;
+    --accent: 0 0% 6% !important;
+    --accent-foreground: 0 0% 98% !important;
+    --destructive: 0 62.8% 30.6% !important;
+    --destructive-foreground: 0 0% 98% !important;
+    --border: 0 0% 8% !important;
+    --input: 0 0% 8% !important;
+    --ring: 0 0% 98% !important;
   }
 }
 
@@ -69,12 +69,20 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #cbd5e1;
+  background: hsl(0 0% 25%);
   border-radius: 3px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #94a3b8;
+  background: hsl(0 0% 35%);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: hsl(0 0% 15%);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: hsl(0 0% 25%);
 }
 
 /* Animation classes */
@@ -95,38 +103,155 @@
 
 /* Priority colors */
 .priority-low {
-  @apply bg-green-100 text-green-800 border-green-200;
+  @apply bg-green-100 text-green-800 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800;
 }
 
 .priority-medium {
-  @apply bg-yellow-100 text-yellow-800 border-yellow-200;
+  @apply bg-yellow-100 text-yellow-800 border-yellow-200 dark:bg-yellow-950 dark:text-yellow-300 dark:border-yellow-800;
 }
 
 .priority-high {
-  @apply bg-orange-100 text-orange-800 border-orange-200;
+  @apply bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-950 dark:text-orange-300 dark:border-orange-800;
 }
 
 .priority-urgent {
-  @apply bg-red-100 text-red-800 border-red-200;
+  @apply bg-red-100 text-red-800 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800;
 }
 
 /* Status colors */
 .status-todo {
-  @apply bg-gray-100 text-gray-800 border-gray-200;
+  @apply bg-amber-100 text-amber-800 border-amber-200 dark:bg-amber-900 dark:text-amber-300 dark:border-amber-700;
 }
 
 .status-in-progress {
-  @apply bg-blue-100 text-blue-800 border-blue-200;
+  @apply bg-sky-100 text-sky-800 border-sky-200 dark:bg-sky-900 dark:text-sky-200 dark:border-sky-700;
 }
 
 .status-in-review {
-  @apply bg-purple-100 text-purple-800 border-purple-200;
+  @apply bg-violet-100 text-violet-800 border-violet-200 dark:bg-violet-900 dark:text-violet-200 dark:border-violet-700;
 }
 
 .status-done {
-  @apply bg-green-100 text-green-800 border-green-200;
+  @apply bg-green-100 text-green-800 border-green-200 dark:bg-green-950 dark:text-green-300 dark:border-green-800;
 }
 
 .status-cancelled {
-  @apply bg-red-100 text-red-800 border-red-200;
+  @apply bg-red-100 text-red-800 border-red-200 dark:bg-red-950 dark:text-red-300 dark:border-red-800;
+}
+
+/* Dark theme specific overrides */
+.dark {
+  color-scheme: dark;
+}
+
+/* Reemplazar todos los gradientes azules con grises */
+.bg-gradient-to-r,
+.bg-gradient-to-br {
+  background: linear-gradient(to right, hsl(0 0% 96%), hsl(0 0% 100%));
+}
+
+.dark .bg-gradient-to-r,
+.dark .bg-gradient-to-br {
+  background: linear-gradient(to right, hsl(0 0% 4%), hsl(0 0% 6%));
+}
+
+/* Botones primarios con estilo neutro */
+.btn-primary {
+  @apply bg-gray-900 text-white hover:bg-gray-800 dark:bg-gray-100 dark:text-gray-900 dark:hover:bg-gray-200;
+}
+
+/* Loading spinners neutros */
+.spinner-border {
+  border-color: hsl(0 0% 20%) transparent transparent transparent;
+}
+
+.dark .spinner-border {
+  border-color: hsl(0 0% 80%) transparent transparent transparent;
+}
+
+/* Forzar sobrescritura de todos los colores azules */
+@layer utilities {
+  .bg-blue-50,
+  .bg-blue-100,
+  .bg-blue-200,
+  .bg-blue-300,
+  .bg-blue-400,
+  .bg-blue-500,
+  .bg-blue-600,
+  .bg-blue-700,
+  .bg-blue-800,
+  .bg-blue-900,
+  .bg-blue-950 {
+    background-color: hsl(0 0% 50%) !important;
+  }
+  
+  .dark .bg-blue-50,
+  .dark .bg-blue-100,
+  .dark .bg-blue-200,
+  .dark .bg-blue-300,
+  .dark .bg-blue-400,
+  .dark .bg-blue-500,
+  .dark .bg-blue-600,
+  .dark .bg-blue-700,
+  .dark .bg-blue-800,
+  .dark .bg-blue-900,
+  .dark .bg-blue-950 {
+    background-color: hsl(0 0% 20%) !important;
+  }
+
+  .text-blue-50,
+  .text-blue-100,
+  .text-blue-200,
+  .text-blue-300,
+  .text-blue-400,
+  .text-blue-500,
+  .text-blue-600,
+  .text-blue-700,
+  .text-blue-800,
+  .text-blue-900,
+  .text-blue-950 {
+    color: hsl(0 0% 30%) !important;
+  }
+  
+  .dark .text-blue-50,
+  .dark .text-blue-100,
+  .dark .text-blue-200,
+  .dark .text-blue-300,
+  .dark .text-blue-400,
+  .dark .text-blue-500,
+  .dark .text-blue-600,
+  .dark .text-blue-700,
+  .dark .text-blue-800,
+  .dark .text-blue-900,
+  .dark .text-blue-950 {
+    color: hsl(0 0% 70%) !important;
+  }
+
+  .border-blue-50,
+  .border-blue-100,
+  .border-blue-200,
+  .border-blue-300,
+  .border-blue-400,
+  .border-blue-500,
+  .border-blue-600,
+  .border-blue-700,
+  .border-blue-800,
+  .border-blue-900,
+  .border-blue-950 {
+    border-color: hsl(0 0% 40%) !important;
+  }
+
+  .dark .border-blue-50,
+  .dark .border-blue-100,
+  .dark .border-blue-200,
+  .dark .border-blue-300,
+  .dark .border-blue-400,
+  .dark .border-blue-500,
+  .dark .border-blue-600,
+  .dark .border-blue-700,
+  .dark .border-blue-800,
+  .dark .border-blue-900,
+  .dark .border-blue-950 {
+    border-color: hsl(0 0% 15%) !important;
+  }
 } 

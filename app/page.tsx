@@ -18,10 +18,10 @@ export default function HomePage() {
 
   if (status === 'loading') {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700 flex items-center justify-center">
-        <div className="text-center text-white">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-white"></div>
-          <p className="mt-4">Cargando...</p>
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-900 flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-600"></div>
+          <p className="mt-4 text-gray-600 dark:text-gray-300">Verificando sesión...</p>
         </div>
       </div>
     )
@@ -32,7 +32,7 @@ export default function HomePage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-600 via-blue-600 to-indigo-700">
+    <div className="min-h-screen bg-gray-100 dark:bg-gray-900">
       <div className="container mx-auto px-4 py-16">
         <div className="text-center text-white mb-16">
           <h1 className="text-6xl font-bold mb-6">
@@ -44,13 +44,13 @@ export default function HomePage() {
           <div className="flex gap-4 justify-center">
             <Link
               href="/auth/login"
-              className="bg-white text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
+              className="bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
             >
               Iniciar Sesión
             </Link>
             <Link
               href="/auth/register"
-              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-purple-600 transition-colors"
+              className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-gray-900 transition-colors"
             >
               Registrarse
             </Link>
@@ -94,7 +94,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="text-blue-400 text-xl">📊</div>
+              <div className="text-gray-600 dark:text-gray-400 text-xl">📊</div>
               <div>
                 <h4 className="font-semibold mb-1">Dashboard Analítico</h4>
                 <p className="opacity-90 text-sm">Visualiza el progreso con gráficos y métricas en tiempo real</p>
@@ -108,7 +108,7 @@ export default function HomePage() {
               </div>
             </div>
             <div className="flex items-start gap-3">
-              <div className="text-purple-400 text-xl">💬</div>
+              <div className="text-gray-600 dark:text-gray-400 text-xl">💬</div>
               <div>
                 <h4 className="font-semibold mb-1">Comentarios y Colaboración</h4>
                 <p className="opacity-90 text-sm">Comenta en tareas y mantén conversaciones contextuales</p>

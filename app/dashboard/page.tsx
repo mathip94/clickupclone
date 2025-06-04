@@ -10,6 +10,9 @@ import CreateTaskModal from '@/components/modals/CreateTaskModal'
 import EditTaskModal from '@/components/modals/EditTaskModal'
 import TaskCard from '@/components/TaskCard'
 import ThemeToggle from '@/components/ThemeToggle'
+import ProjectMembersView from '@/components/ProjectMembersView'
+import ProjectMeetingsView from '@/components/ProjectMeetingsView'
+import NotificationCenter from '@/components/NotificationCenter'
 
 interface DashboardStats {
   totalTasks: number
@@ -66,6 +69,11 @@ export default function DashboardPage() {
   const [showCreateTask, setShowCreateTask] = useState(false)
   const [showEditTask, setShowEditTask] = useState(false)
   const [editingTaskId, setEditingTaskId] = useState<string>('')
+  
+  // Nuevos estados para las vistas
+  const [showProjectMembers, setShowProjectMembers] = useState(false)
+  const [showProjectMeetings, setShowProjectMeetings] = useState(false)
+  const [selectedProject, setSelectedProject] = useState<any>(null)
 
   // Redirigir si no está autenticado
   useEffect(() => {
@@ -182,6 +190,15 @@ export default function DashboardPage() {
     fetchDashboardData()
   }
 
+  const handleProjectAction = (project: any, action: 'members' | 'meetings') => {
+    setSelectedProject(project)
+    if (action === 'members') {
+      setShowProjectMembers(true)
+    } else if (action === 'meetings') {
+      setShowProjectMeetings(true)
+    }
+  }
+
   const getPriorityColor = (priority: string) => {
     switch (priority) {
       case 'URGENT': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
@@ -194,12 +211,12 @@ export default function DashboardPage() {
 
   const getStatusColor = (status: string) => {
     switch (status) {
-      case 'DONE': return 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
-      case 'IN_PROGRESS': return 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-      case 'IN_REVIEW': return 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200'
-      case 'TODO': return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'
-      case 'CANCELLED': return 'bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-200'
-      default: return 'bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200'
+      case 'DONE': return 'bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-200'
+      case 'IN_PROGRESS': return 'bg-sky-100 text-sky-800 dark:bg-sky-900 dark:text-sky-200'
+      case 'IN_REVIEW': return 'bg-violet-100 text-violet-800 dark:bg-violet-900 dark:text-violet-200'
+      case 'TODO': return 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
+      case 'CANCELLED': return 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-200'
+      default: return 'bg-amber-100 text-amber-800 dark:bg-amber-900 dark:text-amber-200'
     }
   }
 
@@ -207,7 +224,7 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-purple-600"></div>
+          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-emerald-600 dark:border-emerald-400"></div>
           <p className="mt-4 text-gray-600 dark:text-gray-400">Cargando dashboard...</p>
         </div>
       </div>
@@ -232,17 +249,18 @@ export default function DashboardPage() {
           <div className="flex items-center space-x-4">
             <button 
               onClick={() => setShowCreateTask(true)}
-              className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+              className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
             >
               + Nueva Tarea
             </button>
+            <NotificationCenter />
             <ThemeToggle />
             <div className="relative">
               <button 
                 onClick={handleLogout}
                 className="flex items-center space-x-2 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
               >
-                <div className="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white font-semibold">
+                <div className="w-8 h-8 bg-gray-600 dark:bg-gray-300 rounded-full flex items-center justify-center text-white dark:text-gray-900 font-semibold">
                   {session.user?.name ? session.user.name.charAt(0).toUpperCase() : 'U'}
                 </div>
                 <span className="text-sm">Cerrar Sesión</span>
@@ -262,8 +280,8 @@ export default function DashboardPage() {
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Tareas Totales</p>
                 <p className="text-3xl font-bold text-gray-900 dark:text-white">{dashboardData.totalTasks}</p>
               </div>
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900 rounded-lg flex items-center justify-center">
-                <span className="text-blue-600 dark:text-blue-400 text-xl">📋</span>
+              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                <span className="text-gray-600 dark:text-gray-300 text-xl">📋</span>
               </div>
             </div>
           </div>
@@ -272,7 +290,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">En Progreso</p>
-                <p className="text-3xl font-bold text-blue-600 dark:text-blue-400">{dashboardData.inProgressTasks}</p>
+                <p className="text-3xl font-bold text-gray-600 dark:text-gray-300">{dashboardData.inProgressTasks}</p>
               </div>
               <div className="w-12 h-12 bg-yellow-100 dark:bg-yellow-900 rounded-lg flex items-center justify-center">
                 <span className="text-yellow-600 dark:text-yellow-400 text-xl">⏳</span>
@@ -296,10 +314,10 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-gray-600 dark:text-gray-400">Tiempo Hoy</p>
-                <p className="text-3xl font-bold text-purple-600 dark:text-purple-400">{dashboardData.todayTime}h</p>
+                <p className="text-3xl font-bold text-gray-700 dark:text-gray-300">{dashboardData.todayTime}h</p>
               </div>
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900 rounded-lg flex items-center justify-center">
-                <span className="text-purple-600 dark:text-purple-400 text-xl">⏰</span>
+              <div className="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-lg flex items-center justify-center">
+                <span className="text-gray-600 dark:text-gray-400 text-xl">⏰</span>
               </div>
             </div>
           </div>
@@ -307,15 +325,15 @@ export default function DashboardPage() {
 
         {/* Getting Started Message or Welcome */}
         {dashboardData.totalTasks === 0 && dashboardData.totalProjects === 0 ? (
-          <div className="mb-8 bg-gradient-to-r from-purple-500 to-blue-600 rounded-lg p-6 text-white">
+          <div className="mb-8 bg-gradient-to-r from-gray-800 to-gray-900 dark:from-gray-900 dark:to-black rounded-lg p-6 text-white">
             <h2 className="text-xl font-bold mb-2">¡Comienza a gestionar tus proyectos!</h2>
-            <p className="text-purple-100 mb-4">
+            <p className="text-gray-100 mb-4">
               Bienvenido a ClickUp Clone. Crea tu primer proyecto y comienza a organizar tus tareas.
             </p>
             <div className="flex space-x-4">
               <button 
                 onClick={() => setShowCreateProject(true)}
-                className="bg-white text-purple-600 px-4 py-2 rounded-lg hover:bg-gray-100 transition-colors font-medium"
+                className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors font-medium"
               >
                 Crear Primer Proyecto
               </button>
@@ -342,7 +360,7 @@ export default function DashboardPage() {
                     <p className="text-gray-500 dark:text-gray-400 mb-4">Crea tu primera tarea para comenzar a organizar tu trabajo.</p>
                     <button 
                       onClick={() => setShowCreateTask(true)}
-                      className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+                      className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
                     >
                       Crear Primera Tarea
                     </button>
@@ -361,7 +379,7 @@ export default function DashboardPage() {
                       <div className="text-center py-4">
                         <button 
                           onClick={() => router.push('/dashboard/tasks')}
-                          className="text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300"
+                          className="text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100"
                         >
                           Ver todas las tareas ({tasks.length - 6} más)
                         </button>
@@ -386,7 +404,7 @@ export default function DashboardPage() {
                   <p className="text-gray-500 dark:text-gray-400 mb-4">Crea tu primer proyecto para comenzar a organizar tus tareas.</p>
                   <button 
                     onClick={() => setShowCreateProject(true)}
-                    className="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+                    className="bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 px-4 py-2 rounded-lg hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors"
                   >
                     Crear Primer Proyecto
                   </button>
@@ -397,7 +415,29 @@ export default function DashboardPage() {
                     <div key={project.id} className="p-4 bg-gray-50 dark:bg-gray-700 rounded-lg">
                       <div className="flex items-center justify-between mb-2">
                         <h3 className="font-medium text-gray-900 dark:text-white">{project.name}</h3>
-                        <span className="text-sm text-gray-500 dark:text-gray-400">{project.totalTasks} tareas</span>
+                        <div className="flex items-center space-x-2">
+                          <span className="text-sm text-gray-500 dark:text-gray-400">{project.totalTasks} tareas</span>
+                          <div className="flex space-x-1">
+                            <button
+                              onClick={() => handleProjectAction(project, 'members')}
+                              className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                              title="Ver miembros"
+                            >
+                              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857M15 11a3 3 0 11-6 0 3 3 0 016 0zm6 0a3 3 0 11-6 0 3 3 0 016 0zm-12 0a3 3 0 11-6 0 3 3 0 016 0z" />
+                              </svg>
+                            </button>
+                            <button
+                              onClick={() => handleProjectAction(project, 'meetings')}
+                              className="p-1 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
+                              title="Ver reuniones"
+                            >
+                              <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
                       </div>
                       <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2 mb-2">
                         <div 
@@ -423,24 +463,24 @@ export default function DashboardPage() {
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             <button 
               onClick={() => setShowCreateTask(true)}
-              className="p-4 text-center bg-purple-50 dark:bg-purple-900 rounded-lg hover:bg-purple-100 dark:hover:bg-purple-800 transition-colors"
+              className="p-4 text-center bg-sky-50 dark:bg-sky-900 rounded-lg hover:bg-sky-100 dark:hover:bg-sky-800 transition-colors"
             >
               <div className="text-2xl mb-2">📝</div>
-              <div className="text-sm font-medium text-gray-900 dark:text-white">Nueva Tarea</div>
+              <div className="text-sm font-medium text-sky-800 dark:text-sky-200">Nueva Tarea</div>
             </button>
             <button 
               onClick={() => setShowCreateProject(true)}
-              className="p-4 text-center bg-blue-50 dark:bg-blue-900 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-800 transition-colors"
+              className="p-4 text-center bg-violet-50 dark:bg-violet-900 rounded-lg hover:bg-violet-100 dark:hover:bg-violet-800 transition-colors"
             >
               <div className="text-2xl mb-2">📁</div>
-              <div className="text-sm font-medium text-gray-900 dark:text-white">Nuevo Proyecto</div>
+              <div className="text-sm font-medium text-violet-800 dark:text-violet-200">Nuevo Proyecto</div>
             </button>
             <button 
-              onClick={() => router.push('/dashboard/reports')}
-              className="p-4 text-center bg-orange-50 dark:bg-orange-900 rounded-lg hover:bg-orange-100 dark:hover:bg-orange-800 transition-colors"
+              onClick={() => router.push('/dashboard/meetings')}
+              className="p-4 text-center bg-emerald-50 dark:bg-emerald-900 rounded-lg hover:bg-emerald-100 dark:hover:bg-emerald-800 transition-colors"
             >
-              <div className="text-2xl mb-2">📊</div>
-              <div className="text-sm font-medium text-gray-900 dark:text-white">Reportes</div>
+              <div className="text-2xl mb-2">📅</div>
+              <div className="text-sm font-medium text-emerald-800 dark:text-emerald-200">Reuniones</div>
             </button>
           </div>
         </div>
@@ -469,6 +509,30 @@ export default function DashboardPage() {
           onClose={() => setShowEditTask(false)}
           onTaskUpdated={handleTaskUpdated}
           taskId={editingTaskId}
+        />
+      )}
+
+      {/* Nuevas vistas */}
+      {showProjectMembers && selectedProject && (
+        <ProjectMembersView
+          projectId={selectedProject.id}
+          projectName={selectedProject.name}
+          userRole="OWNER"
+          onClose={() => {
+            setShowProjectMembers(false)
+            setSelectedProject(null)
+          }}
+        />
+      )}
+
+      {showProjectMeetings && selectedProject && (
+        <ProjectMeetingsView
+          projectId={selectedProject.id}
+          projectName={selectedProject.name}
+          onClose={() => {
+            setShowProjectMeetings(false)
+            setSelectedProject(null)
+          }}
         />
       )}
     </div>
